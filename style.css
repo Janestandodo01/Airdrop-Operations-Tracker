@@ -1,0 +1,74 @@
+:root {
+    --bg-pure-black: #000000;
+    --surface-dark: #0a0a0a;
+    --border-dim: #1f1f1f;
+    --accent-blue: #0055FF;
+    --accent-blue-hover: #0088FF;
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+}
+
+body {
+    background-color: var(--bg-pure-black);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 span {
+    color: var(--accent-blue);
+}
+
+.control-panel {
+    background-color: var(--surface-dark);
+    border: 1px solid var(--border-dim);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+input, select {
+    background-color: var(--bg-pure-black);
+    color: var(--text-primary);
+    border: 1px solid var(--border-dim);
+    padding: 10px;
+    border-radius: 4px;
+    flex: 1;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+button {
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-blue-hover);
+}
+
+.project-card {
+    background-color: var(--surface-dark);
+    border: 1px solid var(--border-dim);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-blue);
+    margin-bottom: 15px;
+}
