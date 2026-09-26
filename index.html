@@ -10,56 +10,56 @@
     <div class="dashboard-container">
         <header style="display: flex; justify-content: space-between; align-items: center;">
             <h1>Airdrop Operations <span>Tracker</span></h1>
-            
-            <!-- Panel Otentikasi -->
             <div id="authPanel">
                 <button id="loginBtn" style="background-color: white; color: black;">Login dengan Google</button>
                 <button id="logoutBtn" style="background-color: #ff3333; display: none;">Logout</button>
             </div>
         </header>
 
-        <!-- Container Aplikasi Utama -->
         <div id="appContainer" style="display: none;">
             
-           <!-- Dasbor Analitik Utama (Interaktif) -->
-<section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
-    <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
-        <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
-        <h2 id="metricTotal" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-    </div>
-    <div onclick="window.setFilter('Active')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#002266'" onmouseout="this.style.backgroundColor='transparent'">
-        <h4 style="margin: 0; color: var(--accent-blue); font-size: 12px; text-transform: uppercase;">Aktif / Grinding</h4>
-        <h2 id="metricActive" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-    </div>
-    <div onclick="window.setFilter('DoneToday')" style="flex: 1; background: var(--surface-dark); border: 1px solid #00cc66; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,204,102,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-        <h4 style="margin: 0; color: #00cc66; font-size: 12px; text-transform: uppercase;">Selesai Hari Ini</h4>
-        <h2 id="metricDoneToday" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-    </div>
-    <div onclick="window.setFilter('Claimable')" style="flex: 1; background: var(--surface-dark); border: 1px solid #ff9900; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,153,0,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-        <h4 style="margin: 0; color: #ff9900; font-size: 12px; text-transform: uppercase;">Siap Klaim</h4>
-        <h2 id="metricClaimable" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-    </div>
-</section>
+            <section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
+                <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
+                    <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
+                    <h2 id="metricTotal" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+                </div>
+                <div onclick="window.setFilter('Active')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#002266'" onmouseout="this.style.backgroundColor='transparent'">
+                    <h4 style="margin: 0; color: var(--accent-blue); font-size: 12px; text-transform: uppercase;">Aktif / Grinding</h4>
+                    <h2 id="metricActive" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+                </div>
+                <div onclick="window.setFilter('DoneToday')" style="flex: 1; background: var(--surface-dark); border: 1px solid #00cc66; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,204,102,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                    <h4 style="margin: 0; color: #00cc66; font-size: 12px; text-transform: uppercase;">Selesai Hari Ini</h4>
+                    <h2 id="metricDoneToday" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+                </div>
+                <div onclick="window.setFilter('Claimable')" style="flex: 1; background: var(--surface-dark); border: 1px solid #ff9900; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,153,0,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                    <h4 style="margin: 0; color: #ff9900; font-size: 12px; text-transform: uppercase;">Siap Klaim</h4>
+                    <h2 id="metricClaimable" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+                </div>
+            </section>
 
-            <!-- Panel Input Data yang Terintegrasi Penuh -->
             <section class="control-panel" style="flex-wrap: wrap;">
                 <input type="text" id="projectName" placeholder="Nama Proyek (ex: ZkSync)" required style="flex: 1 1 20%;">
                 <input type="url" id="projectUrl" placeholder="URL Website (Opsional)" style="flex: 1 1 20%;">
-                
-                <!-- Input Referral Baru -->
                 <input type="url" id="referralLink" placeholder="Link Referral (Opsional)" style="flex: 1 1 20%;">
                 
-               <select id="projectCategory" style="flex: 1 1 12%;">
-    <option value="Testnet">Testnet</option>
-    <option value="Retroactive">Retroactive</option>
-    <option value="Whitelist">Whitelist</option>
-    <option value="Node">Node Running</option>
-    <!-- Kategori Baru -->
-    <option value="Social Quest">Social Quest</option>
-</select>s
+                <select id="projectCategory" style="flex: 1 1 12%;">
+                    <option value="Testnet">Testnet</option>
+                    <option value="Retroactive">Retroactive</option>
+                    <option value="Whitelist">Whitelist</option>
+                    <option value="Node">Node Running</option>
+                    <option value="Social Quest">Social Quest</option>
+                </select>
                 
-                <input type="text" id="network" placeholder="Jaringan (ex: EVM)" style="flex: 1 1 12%;">
-                <input type="text" id="wallet" placeholder="Wallet Alias" style="flex: 1 1 12%;">
+                <!-- [MODIFIKASI] Input Jaringan dan Dompet menjadi Dropdown Cerdas -->
+                <select id="network" style="flex: 1 1 12%;">
+                    <option value="">Pilih Jaringan...</option>
+                    <option value="_add_new_">+ Tambah Jaringan Baru</option>
+                </select>
+                
+                <select id="wallet" style="flex: 1 1 12%;">
+                    <option value="">Pilih Wallet...</option>
+                    <option value="_add_new_">+ Tambah Wallet Baru</option>
+                </select>
                 
                 <select id="taskFrequency" style="flex: 1 1 12%;">
                     <option value="One-Time">Satu Kali</option>
@@ -71,11 +71,8 @@
                 <button id="addProjectBtn" style="flex: 1 1 100%; margin-top: 10px;">Deploy Project Tracker</button>
             </section>
 
-            <!-- Tabel Render Data -->
             <section class="data-view">
-                <div id="projectList" class="grid-layout">
-                    <!-- Data ditarik oleh app.js -->
-                </div>
+                <div id="projectList" class="grid-layout"></div>
             </section>
         </div>
     </div>
