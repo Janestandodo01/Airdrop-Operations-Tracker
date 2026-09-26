@@ -18,6 +18,7 @@
 
         <div id="appContainer" style="display: none;">
             
+            <!-- Dasbor Analitik Utama -->
             <section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
                 <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
                     <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
@@ -50,16 +51,23 @@
                     <option value="Social Quest">Social Quest</option>
                 </select>
                 
-                <!-- [MODIFIKASI] Input Jaringan dan Dompet menjadi Dropdown Cerdas -->
-                <select id="network" style="flex: 1 1 12%;">
-                    <option value="">Pilih Jaringan...</option>
-                    <option value="_add_new_">+ Tambah Jaringan Baru</option>
-                </select>
+                <!-- Kombinasi Dropdown Jaringan & Tombol Hapus -->
+                <div style="flex: 1 1 12%; display: flex; gap: 5px;">
+                    <select id="network" style="flex: 1;">
+                        <option value="">Pilih Jaringan...</option>
+                        <option value="_add_new_">+ Tambah Baru</option>
+                    </select>
+                    <button id="delNetworkBtn" style="flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
+                </div>
                 
-                <select id="wallet" style="flex: 1 1 12%;">
-                    <option value="">Pilih Wallet...</option>
-                    <option value="_add_new_">+ Tambah Wallet Baru</option>
-                </select>
+                <!-- Kombinasi Dropdown Wallet & Tombol Hapus -->
+                <div style="flex: 1 1 12%; display: flex; gap: 5px;">
+                    <select id="wallet" style="flex: 1;">
+                        <option value="">Pilih Wallet...</option>
+                        <option value="_add_new_">+ Tambah Baru</option>
+                    </select>
+                    <button id="delWalletBtn" style="flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
+                </div>
                 
                 <select id="taskFrequency" style="flex: 1 1 12%;">
                     <option value="One-Time">Satu Kali</option>
