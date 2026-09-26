@@ -21,6 +21,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const appContainer = document.getElementById('appContainer');
 const addBtn = document.getElementById('addProjectBtn');
 const projectList = document.getElementById('projectList');
+const networkFilterContainer = document.getElementById('networkFilterContainer');
 
 const networkSelect = document.getElementById('network');
 const walletSelect = document.getElementById('wallet');
@@ -30,7 +31,12 @@ const delWalletBtn = document.getElementById('delWalletBtn');
 let currentUserUID = null;
 let unsubscribeSnapshot = null;
 
-// --- LOGIKA OTENTIKASI ---
+// --- STATE MANAGEMENT ---
+let globalProjectsData = [];
+let savedNetworksLocal = [];
+let currentFilter = 'All';          // Filter Status Dasbor
+let currentNetworkFilter = 'All';   // Filter Jaringan
+
 loginBtn.addEventListener('click', async () => {
     try { await signInWithPopup(auth, provider); } 
     catch (error) { console.error("Gagal Login:", error); }
@@ -56,14 +62,12 @@ onAuthStateChanged(auth, (user) => {
         logoutBtn.style.display = 'none';
         appContainer.style.display = 'none';
         projectList.innerHTML = '';
+        networkFilterContainer.innerHTML = '';
         if (unsubscribeSnapshot) unsubscribeSnapshot();
     }
 });
 
-// --- STATE MANAGEMENT & FETCH DATA ---
-let globalProjectsData = [];
-let currentFilter = 'All';
-
+// --- PENGAMBILAN DATA PROYEK ---
 function loadUserData(uid) {
     const q = query(collection(db, "airdrop_projects"), where("uid", "==", uid));
     unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -80,23 +84,27 @@ function loadUserData(uid) {
     });
 }
 
-// --- LOGIKA PRESET JARINGAN & WALLET ---
+// --- PENGAMBILAN PENGATURAN USER & RENDER FILTER JARINGAN ---
 async function loadUserSettings(uid) {
     const docRef = doc(db, "user_settings", uid);
     const docSnap = await getDoc(docRef);
     
     networkSelect.innerHTML = '<option value="">Pilih Jaringan...</option><option value="_add_new_">+ Tambah Baru</option>';
     walletSelect.innerHTML = '<option value="">Pilih Wallet...</option><option value="_add_new_">+ Tambah Baru</option>';
+    
+    delNetworkBtn.style.display = 'none';
+    delWalletBtn.style.display = 'none';
 
     if (docSnap.exists()) {
         const data = docSnap.data();
-        if (data.saved_networks) {
-            data.saved_networks.forEach(net => {
-                const opt = document.createElement('option');
-                opt.value = net; opt.text = net;
-                networkSelect.insertBefore(opt, networkSelect.lastElementChild);
-            });
-        }
+        savedNetworksLocal = data.saved_networks || [];
+        
+        savedNetworksLocal.forEach(net => {
+            const opt = document.createElement('option');
+            opt.value = net; opt.text = net;
+            networkSelect.insertBefore(opt, networkSelect.lastElementChild);
+        });
+        
         if (data.saved_wallets) {
             data.saved_wallets.forEach(wal => {
                 const opt = document.createElement('option');
@@ -104,38 +112,78 @@ async function loadUserSettings(uid) {
                 walletSelect.insertBefore(opt, walletSelect.lastElementChild);
             });
         }
+        
+        // Panggil render filter jaringan di layar
+        renderNetworkFilterButtons();
     }
 }
 
-// Tambah Preset
+// --- RENDER TOMBOL FILTER JARINGAN ---
+function renderNetworkFilterButtons() {
+    networkFilterContainer.innerHTML = '';
+    
+    // Tombol "Semua Jaringan"
+    const btnAll = document.createElement('button');
+    btnAll.innerText = 'Semua Jaringan';
+    const isActiveAll = currentNetworkFilter === 'All';
+    btnAll.style.cssText = `background: ${isActiveAll ? 'var(--accent-blue)' : 'var(--surface-dark)'}; color: ${isActiveAll ? 'black' : 'var(--text-primary)'}; border: 1px solid var(--accent-blue); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; white-space: nowrap;`;
+    btnAll.onclick = () => window.setNetworkFilter('All');
+    networkFilterContainer.appendChild(btnAll);
+
+    // Tombol untuk setiap jaringan yang tersimpan
+    savedNetworksLocal.forEach(net => {
+        const btn = document.createElement('button');
+        btn.innerText = net;
+        const isActive = currentNetworkFilter === net;
+        btn.style.cssText = `background: ${isActive ? 'var(--accent-blue)' : 'var(--surface-dark)'}; color: ${isActive ? 'black' : 'var(--text-primary)'}; border: 1px solid var(--accent-blue); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; white-space: nowrap;`;
+        btn.onclick = () => window.setNetworkFilter(net);
+        networkFilterContainer.appendChild(btn);
+    });
+}
+
+// Logika Pembaruan Prasetel (Tambah)
 networkSelect.addEventListener('change', async (e) => {
-    if (e.target.value === '_add_new_') {
+    const val = e.target.value;
+    if (val === '_add_new_') {
+        delNetworkBtn.style.display = 'none';
         const newNet = prompt("Masukkan nama Jaringan baru:");
         if (newNet && newNet.trim() !== '') {
             await setDoc(doc(db, "user_settings", currentUserUID), { saved_networks: arrayUnion(newNet.trim()) }, { merge: true });
             loadUserSettings(currentUserUID); 
         }
         networkSelect.value = ''; 
+    } else if (val !== '') {
+        delNetworkBtn.style.display = 'block'; 
+    } else {
+        delNetworkBtn.style.display = 'none'; 
     }
 });
 
 walletSelect.addEventListener('change', async (e) => {
-    if (e.target.value === '_add_new_') {
-        const newWal = prompt("Masukkan nama/alamat Wallet baru:");
+    const val = e.target.value;
+    if (val === '_add_new_') {
+        delWalletBtn.style.display = 'none';
+        const newWal = prompt("SOP PENAMAAN WAJIB:\n[Jaringan] [Fungsi] - [Alamat Singkat]\nContoh: EVM Main - 0x1A...8zB2\n\nMasukkan Wallet Baru:");
         if (newWal && newWal.trim() !== '') {
             await setDoc(doc(db, "user_settings", currentUserUID), { saved_wallets: arrayUnion(newWal.trim()) }, { merge: true });
             loadUserSettings(currentUserUID); 
         }
         walletSelect.value = '';
+    } else if (val !== '') {
+        delWalletBtn.style.display = 'block'; 
+    } else {
+        delWalletBtn.style.display = 'none'; 
     }
 });
 
-// Hapus Preset
+// Logika Penghapusan Prasetel (Hapus)
 delNetworkBtn.addEventListener('click', async () => {
     const selected = networkSelect.value;
     if (!selected || selected === '_add_new_') return;
     if (confirm(`Hapus jaringan '${selected}' dari prasetel?`)) {
         await setDoc(doc(db, "user_settings", currentUserUID), { saved_networks: arrayRemove(selected) }, { merge: true });
+        // Jika jaringan yang dihapus sedang difilter, kembalikan filter ke 'All'
+        if(currentNetworkFilter === selected) currentNetworkFilter = 'All';
         loadUserSettings(currentUserUID);
     }
 });
@@ -149,8 +197,7 @@ delWalletBtn.addEventListener('click', async () => {
     }
 });
 
-
-// --- LOGIKA DATABASE (CRUD) ---
+// --- OPERASI CRUD ---
 addBtn.addEventListener('click', async () => {
     const name = document.getElementById('projectName').value;
     const category = document.getElementById('projectCategory').value;
@@ -183,12 +230,15 @@ addBtn.addEventListener('click', async () => {
         document.getElementById('referralLink').value = ''; 
         networkSelect.value = '';
         walletSelect.value = '';
+        
+        delNetworkBtn.style.display = 'none';
+        delWalletBtn.style.display = 'none';
     } catch (e) {
         console.error("Gagal input: ", e);
     }
 });
 
-// --- RENDER & UI ENGINE ---
+// --- RENDER MESIN & LOGIKA PENYARINGAN GANDA (DUAL-FILTERING) ---
 function renderProjects() {
     projectList.innerHTML = ''; 
     let countTotal = 0, countActive = 0, countDoneToday = 0, countClaimable = 0;
@@ -196,6 +246,7 @@ function renderProjects() {
     globalProjectsData.forEach((data) => {
         const id = data.id;
         
+        // Metrik Dasbor Utama (Menghitung seluruh data terlepas dari filter Jaringan)
         countTotal++;
         if (data.status === 'Active') countActive++;
         if (data.status === 'Claimable' || data.status === 'Eligible') countClaimable++;
@@ -209,13 +260,20 @@ function renderProjects() {
             }
         }
 
-        let shouldRender = false;
-        if (currentFilter === 'All') shouldRender = true;
-        if (currentFilter === 'Active' && data.status === 'Active') shouldRender = true;
-        if (currentFilter === 'Claimable' && (data.status === 'Claimable' || data.status === 'Eligible')) shouldRender = true;
-        if (currentFilter === 'DoneToday' && isDoneToday && data.status === 'Active') shouldRender = true;
+        // 1. Logika Filter Status Dasbor Atas
+        let shouldRenderStatus = false;
+        if (currentFilter === 'All') shouldRenderStatus = true;
+        if (currentFilter === 'Active' && data.status === 'Active') shouldRenderStatus = true;
+        if (currentFilter === 'Claimable' && (data.status === 'Claimable' || data.status === 'Eligible')) shouldRenderStatus = true;
+        if (currentFilter === 'DoneToday' && isDoneToday && data.status === 'Active') shouldRenderStatus = true;
 
-        if (!shouldRender) return;
+        // 2. Logika Filter Jaringan
+        let shouldRenderNetwork = false;
+        if (currentNetworkFilter === 'All') shouldRenderNetwork = true;
+        if (currentNetworkFilter !== 'All' && data.network_rpc === currentNetworkFilter) shouldRenderNetwork = true;
+
+        // Validasi Eksekusi: Data hanya tampil jika lolos KEDUA filter
+        if (!shouldRenderStatus || !shouldRenderNetwork) return;
 
         const card = document.createElement('div');
         card.className = 'project-card';
@@ -265,7 +323,18 @@ function renderProjects() {
     document.getElementById('metricClaimable').innerText = countClaimable;
 }
 
-window.setFilter = (filterType) => { currentFilter = filterType; renderProjects(); };
+// Fungsi Pemicu Eksternal
+window.setFilter = (filterType) => { 
+    currentFilter = filterType; 
+    renderProjects(); 
+};
+
+window.setNetworkFilter = (networkType) => {
+    currentNetworkFilter = networkType;
+    renderNetworkFilterButtons(); // Perbarui warna UI tombol aktif
+    renderProjects();
+};
+
 window.updateStatus = async (id, newStatus) => {
     if(!currentUserUID) return;
     try { await updateDoc(doc(db, "airdrop_projects", id), { status: newStatus, last_updated: new Date() }); } 
