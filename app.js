@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, query, where, setDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, query, where, setDoc, getDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -24,6 +24,8 @@ const projectList = document.getElementById('projectList');
 
 const networkSelect = document.getElementById('network');
 const walletSelect = document.getElementById('wallet');
+const delNetworkBtn = document.getElementById('delNetworkBtn');
+const delWalletBtn = document.getElementById('delWalletBtn');
 
 let currentUserUID = null;
 let unsubscribeSnapshot = null;
@@ -46,8 +48,8 @@ onAuthStateChanged(auth, (user) => {
         logoutBtn.style.display = 'block';
         appContainer.style.display = 'block';
         
-        loadUserSettings(currentUserUID); // Muat preset jaringan/wallet
-        loadUserData(currentUserUID);     // Muat data proyek
+        loadUserSettings(currentUserUID); 
+        loadUserData(currentUserUID);     
     } else {
         currentUserUID = null;
         loginBtn.style.display = 'block';
@@ -83,9 +85,8 @@ async function loadUserSettings(uid) {
     const docRef = doc(db, "user_settings", uid);
     const docSnap = await getDoc(docRef);
     
-    // Bersihkan opsi lama (kecuali default dan add new)
-    networkSelect.innerHTML = '<option value="">Pilih Jaringan...</option><option value="_add_new_">+ Tambah Jaringan Baru</option>';
-    walletSelect.innerHTML = '<option value="">Pilih Wallet...</option><option value="_add_new_">+ Tambah Wallet Baru</option>';
+    networkSelect.innerHTML = '<option value="">Pilih Jaringan...</option><option value="_add_new_">+ Tambah Baru</option>';
+    walletSelect.innerHTML = '<option value="">Pilih Wallet...</option><option value="_add_new_">+ Tambah Baru</option>';
 
     if (docSnap.exists()) {
         const data = docSnap.data();
@@ -106,26 +107,45 @@ async function loadUserSettings(uid) {
     }
 }
 
-// Listener untuk memicu penambahan item baru
+// Tambah Preset
 networkSelect.addEventListener('change', async (e) => {
     if (e.target.value === '_add_new_') {
-        const newNet = prompt("Masukkan nama Jaringan baru (ex: Arbitrum, Solana):");
+        const newNet = prompt("Masukkan nama Jaringan baru:");
         if (newNet && newNet.trim() !== '') {
             await setDoc(doc(db, "user_settings", currentUserUID), { saved_networks: arrayUnion(newNet.trim()) }, { merge: true });
-            loadUserSettings(currentUserUID); // Refresh dropdown
+            loadUserSettings(currentUserUID); 
         }
-        networkSelect.value = ''; // Kembalikan ke default agar tidak stuck
+        networkSelect.value = ''; 
     }
 });
 
 walletSelect.addEventListener('change', async (e) => {
     if (e.target.value === '_add_new_') {
-        const newWal = prompt("Masukkan nama/alamat Wallet baru (ex: Main-EVM, 0x123...):");
+        const newWal = prompt("Masukkan nama/alamat Wallet baru:");
         if (newWal && newWal.trim() !== '') {
             await setDoc(doc(db, "user_settings", currentUserUID), { saved_wallets: arrayUnion(newWal.trim()) }, { merge: true });
-            loadUserSettings(currentUserUID); // Refresh dropdown
+            loadUserSettings(currentUserUID); 
         }
         walletSelect.value = '';
+    }
+});
+
+// Hapus Preset
+delNetworkBtn.addEventListener('click', async () => {
+    const selected = networkSelect.value;
+    if (!selected || selected === '_add_new_') return;
+    if (confirm(`Hapus jaringan '${selected}' dari prasetel?`)) {
+        await setDoc(doc(db, "user_settings", currentUserUID), { saved_networks: arrayRemove(selected) }, { merge: true });
+        loadUserSettings(currentUserUID);
+    }
+});
+
+delWalletBtn.addEventListener('click', async () => {
+    const selected = walletSelect.value;
+    if (!selected || selected === '_add_new_') return;
+    if (confirm(`Hapus wallet '${selected}' dari prasetel?`)) {
+        await setDoc(doc(db, "user_settings", currentUserUID), { saved_wallets: arrayRemove(selected) }, { merge: true });
+        loadUserSettings(currentUserUID);
     }
 });
 
