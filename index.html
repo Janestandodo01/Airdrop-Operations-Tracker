@@ -21,25 +21,25 @@
         <!-- Container Aplikasi Utama -->
         <div id="appContainer" style="display: none;">
             
-            <!-- Dasbor Analitik Utama -->
-            <section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
-                <div style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center;">
-                    <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
-                    <h2 id="metricTotal" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div style="flex: 1; background: var(--surface-dark); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; text-align: center;">
-                    <h4 style="margin: 0; color: var(--accent-blue); font-size: 12px; text-transform: uppercase;">Aktif / Grinding</h4>
-                    <h2 id="metricActive" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div style="flex: 1; background: var(--surface-dark); border: 1px solid #00cc66; padding: 15px; border-radius: 8px; text-align: center;">
-                    <h4 style="margin: 0; color: #00cc66; font-size: 12px; text-transform: uppercase;">Selesai Hari Ini</h4>
-                    <h2 id="metricDoneToday" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div style="flex: 1; background: var(--surface-dark); border: 1px solid #ff9900; padding: 15px; border-radius: 8px; text-align: center;">
-                    <h4 style="margin: 0; color: #ff9900; font-size: 12px; text-transform: uppercase;">Siap Klaim</h4>
-                    <h2 id="metricClaimable" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-            </section>
+           <!-- Dasbor Analitik Utama (Interaktif) -->
+<section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
+    <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
+        <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
+        <h2 id="metricTotal" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+    </div>
+    <div onclick="window.setFilter('Active')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#002266'" onmouseout="this.style.backgroundColor='transparent'">
+        <h4 style="margin: 0; color: var(--accent-blue); font-size: 12px; text-transform: uppercase;">Aktif / Grinding</h4>
+        <h2 id="metricActive" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+    </div>
+    <div onclick="window.setFilter('DoneToday')" style="flex: 1; background: var(--surface-dark); border: 1px solid #00cc66; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,204,102,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+        <h4 style="margin: 0; color: #00cc66; font-size: 12px; text-transform: uppercase;">Selesai Hari Ini</h4>
+        <h2 id="metricDoneToday" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+    </div>
+    <div onclick="window.setFilter('Claimable')" style="flex: 1; background: var(--surface-dark); border: 1px solid #ff9900; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,153,0,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+        <h4 style="margin: 0; color: #ff9900; font-size: 12px; text-transform: uppercase;">Siap Klaim</h4>
+        <h2 id="metricClaimable" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
+    </div>
+</section>
 
             <!-- Panel Input Data yang Terintegrasi Penuh -->
             <section class="control-panel" style="flex-wrap: wrap;">
@@ -49,14 +49,14 @@
                 <!-- Input Referral Baru -->
                 <input type="url" id="referralLink" placeholder="Link Referral (Opsional)" style="flex: 1 1 20%;">
                 
-                <select id="projectCategory" style="flex: 1 1 12%;">
+               <select id="projectCategory" style="flex: 1 1 12%;">
     <option value="Testnet">Testnet</option>
     <option value="Retroactive">Retroactive</option>
     <option value="Whitelist">Whitelist</option>
     <option value="Node">Node Running</option>
     <!-- Kategori Baru -->
     <option value="Social Quest">Social Quest</option>
-</select>
+</select>s
                 
                 <input type="text" id="network" placeholder="Jaringan (ex: EVM)" style="flex: 1 1 12%;">
                 <input type="text" id="wallet" placeholder="Wallet Alias" style="flex: 1 1 12%;">
