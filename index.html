@@ -18,7 +18,7 @@
 
         <div id="appContainer" style="display: none;">
             
-            <!-- Dasbor Analitik Utama -->
+            <!-- Dasbor Analitik Utama (Status Filter) -->
             <section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
                 <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
                     <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
@@ -38,6 +38,7 @@
                 </div>
             </section>
 
+            <!-- Panel Input Data -->
             <section class="control-panel" style="flex-wrap: wrap;">
                 <input type="text" id="projectName" placeholder="Nama Proyek (ex: ZkSync)" required style="flex: 1 1 20%;">
                 <input type="url" id="projectUrl" placeholder="URL Website (Opsional)" style="flex: 1 1 20%;">
@@ -51,22 +52,20 @@
                     <option value="Social Quest">Social Quest</option>
                 </select>
                 
-                <!-- Kombinasi Dropdown Jaringan & Tombol Hapus -->
                 <div style="flex: 1 1 12%; display: flex; gap: 5px;">
                     <select id="network" style="flex: 1;">
                         <option value="">Pilih Jaringan...</option>
                         <option value="_add_new_">+ Tambah Baru</option>
                     </select>
-                    <button id="delNetworkBtn" style="flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
+                    <button id="delNetworkBtn" style="display: none; flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
                 </div>
                 
-                <!-- Kombinasi Dropdown Wallet & Tombol Hapus -->
                 <div style="flex: 1 1 12%; display: flex; gap: 5px;">
                     <select id="wallet" style="flex: 1;">
                         <option value="">Pilih Wallet...</option>
                         <option value="_add_new_">+ Tambah Baru</option>
                     </select>
-                    <button id="delWalletBtn" style="flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
+                    <button id="delWalletBtn" style="display: none; flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
                 </div>
                 
                 <select id="taskFrequency" style="flex: 1 1 12%;">
@@ -79,6 +78,12 @@
                 <button id="addProjectBtn" style="flex: 1 1 100%; margin-top: 10px;">Deploy Project Tracker</button>
             </section>
 
+            <!-- [BARU] Panel Filter Jaringan -->
+            <section id="networkFilterContainer" style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0 20px 0; border-bottom: 1px solid var(--border-dim); margin-bottom: 20px;">
+                <!-- Tombol Jaringan Dirender Oleh JavaScript -->
+            </section>
+
+            <!-- Tabel Render Data -->
             <section class="data-view">
                 <div id="projectList" class="grid-layout"></div>
             </section>
