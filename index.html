@@ -3,93 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 Airdrop Ops Tracker</title>
+    <title>AeroFolio | Terminal Web3</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <header style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Airdrop Operations <span>Tracker</span></h1>
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Aero<span style="color: #60a5fa;">Folio</span></h1>
+            
             <div id="authPanel">
-                <button id="loginBtn" style="background-color: white; color: black;">Login dengan Google</button>
-                <button id="logoutBtn" style="background-color: #ff3333; display: none;">Logout</button>
+                <button id="loginBtn" class="btn-primary" style="color: white; border-color: rgba(255,255,255,0.2);">Login Google</button>
+                <button id="logoutBtn" class="btn-primary" style="display: none; border-color: rgba(239, 68, 68, 0.3); color: #f87171;">Logout</button>
             </div>
         </header>
 
         <div id="appContainer" style="display: none;">
             
-            <!-- Dasbor Analitik Utama (Status Filter) -->
-            <section class="analytics-dashboard" style="display: flex; gap: 15px; margin-bottom: 25px;">
-                <div onclick="window.setFilter('All')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--border-dim); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='var(--border-dim)'">
-                    <h4 style="margin: 0; color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">Total Portofolio</h4>
-                    <h2 id="metricTotal" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div onclick="window.setFilter('Active')" style="flex: 1; background: var(--surface-dark); border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#002266'" onmouseout="this.style.backgroundColor='transparent'">
-                    <h4 style="margin: 0; color: var(--accent-blue); font-size: 12px; text-transform: uppercase;">Aktif / Grinding</h4>
-                    <h2 id="metricActive" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div onclick="window.setFilter('DoneToday')" style="flex: 1; background: var(--surface-dark); border: 1px solid #00cc66; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,204,102,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                    <h4 style="margin: 0; color: #00cc66; font-size: 12px; text-transform: uppercase;">Selesai Hari Ini</h4>
-                    <h2 id="metricDoneToday" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-                <div onclick="window.setFilter('Claimable')" style="flex: 1; background: var(--surface-dark); border: 1px solid #ff9900; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,153,0,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                    <h4 style="margin: 0; color: #ff9900; font-size: 12px; text-transform: uppercase;">Siap Klaim</h4>
-                    <h2 id="metricClaimable" style="margin: 10px 0 0 0; color: var(--text-primary); font-size: 28px;">0</h2>
-                </div>
-            </section>
+            <nav class="tab-nav">
+                <button class="tab-btn active" onclick="window.switchTab('airdropTab', this)">Airdrop Tracker</button>
+                <button class="tab-btn" onclick="window.switchTab('tradingTab', this)">Trading Journal</button>
+            </nav>
 
-            <!-- Panel Input Data -->
-            <section class="control-panel" style="flex-wrap: wrap;">
-                <input type="text" id="projectName" placeholder="Nama Proyek (ex: ZkSync)" required style="flex: 1 1 20%;">
-                <input type="url" id="projectUrl" placeholder="URL Website (Opsional)" style="flex: 1 1 20%;">
-                <input type="url" id="referralLink" placeholder="Link Referral (Opsional)" style="flex: 1 1 20%;">
+            <!-- TAB 1: AIRDROP TRACKER -->
+            <div id="airdropTab" class="tab-content active">
                 
-                <select id="projectCategory" style="flex: 1 1 12%;">
-                    <option value="Testnet">Testnet</option>
-                    <option value="Retroactive">Retroactive</option>
-                    <option value="Whitelist">Whitelist</option>
-                    <option value="Node">Node Running</option>
-                    <option value="Social Quest">Social Quest</option>
-                </select>
-                
-                <div style="flex: 1 1 12%; display: flex; gap: 5px;">
-                    <select id="network" style="flex: 1;">
-                        <option value="">Pilih Jaringan...</option>
-                        <option value="_add_new_">+ Tambah Baru</option>
+                <section class="analytics-dashboard" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <div id="cardAll" class="metric-card" onclick="window.setFilter('All')">
+                        <h4>Total Portofolio</h4>
+                        <h2 id="metricTotal">0</h2>
+                    </div>
+                    <div id="cardActive" class="metric-card" onclick="window.setFilter('Active')">
+                        <h4>Aktif / Grinding</h4>
+                        <h2 id="metricActive">0</h2>
+                    </div>
+                    <div id="cardDoneToday" class="metric-card" onclick="window.setFilter('DoneToday')">
+                        <h4>Selesai Hari Ini</h4>
+                        <h2 id="metricDoneToday">0</h2>
+                    </div>
+                    <div id="cardClaimable" class="metric-card" onclick="window.setFilter('Claimable')">
+                        <h4>Siap Klaim</h4>
+                        <h2 id="metricClaimable">0</h2>
+                    </div>
+                </section>
+
+                <section class="control-panel" style="flex-wrap: wrap;">
+                    <input type="text" id="projectName" class="form-input" placeholder="Nama Proyek (ex: ZkSync)" required style="flex: 1 1 20%;">
+                    <input type="url" id="projectUrl" class="form-input" placeholder="URL Website (Opsional)" style="flex: 1 1 20%;">
+                    <input type="url" id="referralLink" class="form-input" placeholder="Link Referral (Opsional)" style="flex: 1 1 20%;">
+                    
+                    <select id="projectCategory" class="form-input" style="flex: 1 1 12%;">
+                        <option value="Testnet">Testnet</option>
+                        <option value="Retroactive">Retroactive</option>
+                        <option value="Whitelist">Whitelist</option>
+                        <option value="Node">Node Running</option>
+                        <option value="Social Quest">Social Quest</option>
                     </select>
-                    <button id="delNetworkBtn" style="display: none; flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
-                </div>
-                
-                <div style="flex: 1 1 12%; display: flex; gap: 5px;">
-                    <select id="wallet" style="flex: 1;">
-                        <option value="">Pilih Wallet...</option>
-                        <option value="_add_new_">+ Tambah Baru</option>
+                    
+                    <div style="flex: 1 1 12%; display: flex; gap: 8px;">
+                        <select id="network" class="form-input" style="flex: 1;">
+                            <option value="">Pilih Jaringan...</option>
+                            <option value="_add_new_">+ Tambah Baru</option>
+                        </select>
+                        <button id="delNetworkBtn" style="display: none; background: transparent; border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; border-radius: 12px; padding: 0 12px;">X</button>
+                    </div>
+                    
+                    <div style="flex: 1 1 12%; display: flex; gap: 8px;">
+                        <select id="wallet" class="form-input" style="flex: 1;">
+                            <option value="">Pilih Wallet...</option>
+                            <option value="_add_new_">+ Tambah Baru</option>
+                        </select>
+                        <button id="delWalletBtn" style="display: none; background: transparent; border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; border-radius: 12px; padding: 0 12px;">X</button>
+                    </div>
+                    
+                    <select id="taskFrequency" class="form-input" style="flex: 1 1 12%;">
+                        <option value="One-Time">Satu Kali</option>
+                        <option value="Daily">Harian</option>
+                        <option value="Weekly">Mingguan</option>
+                        <option value="Monthly">Bulanan</option>
                     </select>
-                    <button id="delWalletBtn" style="display: none; flex: 0 0 auto; background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 0 10px; border-radius: 4px;" title="Hapus Terpilih">X</button>
-                </div>
-                
-                <select id="taskFrequency" style="flex: 1 1 12%;">
-                    <option value="One-Time">Satu Kali</option>
-                    <option value="Daily">Harian</option>
-                    <option value="Weekly">Mingguan</option>
-                    <option value="Monthly">Bulanan</option>
-                </select>
-                
-                <button id="addProjectBtn" style="flex: 1 1 100%; margin-top: 10px;">Deploy Project Tracker</button>
-            </section>
+                    
+                    <button id="addProjectBtn" class="btn-primary" style="flex: 1 1 100%;">Deploy Project Tracker</button>
+                </section>
 
-            <!-- [BARU] Panel Filter Jaringan -->
-            <section id="networkFilterContainer" style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0 20px 0; border-bottom: 1px solid var(--border-dim); margin-bottom: 20px;">
-                <!-- Tombol Jaringan Dirender Oleh JavaScript -->
-            </section>
+                <section id="networkFilterContainer" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 24px;"></section>
 
-            <!-- Tabel Render Data -->
-            <section class="data-view">
-                <div id="projectList" class="grid-layout"></div>
-            </section>
+                <section class="data-view">
+                    <div id="projectList" class="grid-layout"></div>
+                </section>
+            </div>
+
+            <!-- TAB 2: TRADING JOURNAL -->
+            <div id="tradingTab" class="tab-content">
+                <section class="control-panel" style="flex-wrap: wrap;">
+                    <input type="text" id="tradePair" class="form-input" placeholder="Pair (ex: BTC/USDT)" required style="flex: 1 1 15%;">
+                    
+                    <select id="tradePosition" class="form-input" style="flex: 1 1 15%;">
+                        <option value="LONG">Long (Buy)</option>
+                        <option value="SHORT">Short (Sell)</option>
+                        <option value="SPOT">Spot Hold</option>
+                    </select>
+                    
+                    <input type="number" id="tradeLeverage" class="form-input" placeholder="Leverage (ex: 10)" style="flex: 1 1 10%;">
+                    <input type="number" id="tradeEntry" class="form-input" placeholder="Entry Price" step="any" required style="flex: 1 1 20%;">
+                    <input type="number" id="tradeExit" class="form-input" placeholder="Exit Price" step="any" required style="flex: 1 1 20%;">
+                    <input type="text" id="tradeSetup" class="form-input" placeholder="Alasan / Setup (ex: Bull Flag H4)" style="flex: 1 1 100%;">
+                    
+                    <button id="addTradeBtn" class="btn-primary" style="flex: 1 1 100%;">Eksekusi Jurnal Trading</button>
+                </section>
+                
+                <section class="data-view">
+                    <div id="tradingList" class="grid-layout"></div>
+                </section>
+            </div>
+
         </div>
     </div>
 
+    <script>
+        window.switchTab = function(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => { tab.style.display = 'none'; });
+            document.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('active'); });
+            document.getElementById(tabId).style.display = 'block';
+            btnElement.classList.add('active');
+        };
+    </script>
     <script type="module" src="app.js"></script>
 </body>
 </html>
