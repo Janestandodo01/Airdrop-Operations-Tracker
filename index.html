@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroFolio | Terminal Web3</title>
+    <title>AeroFolio | Web3 Terminal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
             <h1 style="margin: 0; font-size: 24px; font-weight: 700;">Aero<span style="color: #60a5fa;">Folio</span></h1>
             
             <div id="authPanel">
-                <button id="loginBtn" class="btn-primary" style="color: white; border-color: rgba(255,255,255,0.2);">Login Google</button>
+                <button id="loginBtn" class="btn-primary" style="color: white; border-color: rgba(255,255,255,0.2);">Google Login</button>
                 <button id="logoutBtn" class="btn-primary" style="display: none; border-color: rgba(239, 68, 68, 0.3); color: #f87171;">Logout</button>
             </div>
         </header>
@@ -26,30 +26,29 @@
 
             <!-- TAB 1: AIRDROP TRACKER -->
             <div id="airdropTab" class="tab-content active">
-                
                 <section class="analytics-dashboard" style="display: flex; gap: 16px; margin-bottom: 24px;">
                     <div id="cardAll" class="metric-card" onclick="window.setFilter('All')">
-                        <h4>Total Portofolio</h4>
+                        <h4>Total Portfolio</h4>
                         <h2 id="metricTotal">0</h2>
                     </div>
                     <div id="cardActive" class="metric-card" onclick="window.setFilter('Active')">
-                        <h4>Aktif / Grinding</h4>
+                        <h4>Active / Grinding</h4>
                         <h2 id="metricActive">0</h2>
                     </div>
                     <div id="cardDoneToday" class="metric-card" onclick="window.setFilter('DoneToday')">
-                        <h4>Selesai Hari Ini</h4>
+                        <h4>Completed Today</h4>
                         <h2 id="metricDoneToday">0</h2>
                     </div>
                     <div id="cardClaimable" class="metric-card" onclick="window.setFilter('Claimable')">
-                        <h4>Siap Klaim</h4>
+                        <h4>Claimable</h4>
                         <h2 id="metricClaimable">0</h2>
                     </div>
                 </section>
 
                 <section class="control-panel" style="flex-wrap: wrap;">
-                    <input type="text" id="projectName" class="form-input" placeholder="Nama Proyek (ex: ZkSync)" required style="flex: 1 1 20%;">
-                    <input type="url" id="projectUrl" class="form-input" placeholder="URL Website (Opsional)" style="flex: 1 1 20%;">
-                    <input type="url" id="referralLink" class="form-input" placeholder="Link Referral (Opsional)" style="flex: 1 1 20%;">
+                    <input type="text" id="projectName" class="form-input" placeholder="Project Name (e.g., ZkSync)" required style="flex: 1 1 20%;">
+                    <input type="url" id="projectUrl" class="form-input" placeholder="Website URL (Optional)" style="flex: 1 1 20%;">
+                    <input type="url" id="referralLink" class="form-input" placeholder="Referral Link (Optional)" style="flex: 1 1 20%;">
                     
                     <select id="projectCategory" class="form-input" style="flex: 1 1 12%;">
                         <option value="Testnet">Testnet</option>
@@ -61,32 +60,31 @@
                     
                     <div style="flex: 1 1 12%; display: flex; gap: 8px;">
                         <select id="network" class="form-input" style="flex: 1;">
-                            <option value="">Pilih Jaringan...</option>
-                            <option value="_add_new_">+ Tambah Baru</option>
+                            <option value="">Select Network...</option>
+                            <option value="_add_new_">+ Add New</option>
                         </select>
                         <button id="delNetworkBtn" style="display: none; background: transparent; border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; border-radius: 12px; padding: 0 12px;">X</button>
                     </div>
                     
                     <div style="flex: 1 1 12%; display: flex; gap: 8px;">
                         <select id="wallet" class="form-input" style="flex: 1;">
-                            <option value="">Pilih Wallet...</option>
-                            <option value="_add_new_">+ Tambah Baru</option>
+                            <option value="">Select Wallet...</option>
+                            <option value="_add_new_">+ Add New</option>
                         </select>
                         <button id="delWalletBtn" style="display: none; background: transparent; border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; border-radius: 12px; padding: 0 12px;">X</button>
                     </div>
                     
                     <select id="taskFrequency" class="form-input" style="flex: 1 1 12%;">
-                        <option value="One-Time">Satu Kali</option>
-                        <option value="Daily">Harian</option>
-                        <option value="Weekly">Mingguan</option>
-                        <option value="Monthly">Bulanan</option>
+                        <option value="One-Time">One-Time</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
                     </select>
                     
                     <button id="addProjectBtn" class="btn-primary" style="flex: 1 1 100%;">Deploy Project Tracker</button>
                 </section>
 
                 <section id="networkFilterContainer" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 24px;"></section>
-
                 <section class="data-view">
                     <div id="projectList" class="grid-layout"></div>
                 </section>
@@ -94,28 +92,53 @@
 
             <!-- TAB 2: TRADING JOURNAL -->
             <div id="tradingTab" class="tab-content">
+                
+                <!-- Capital & Performance Dashboard -->
+                <section class="analytics-dashboard" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                    <div class="metric-card" style="flex: 1.5; text-align: left; position: relative;">
+                        <h4 style="margin-bottom: 5px;">Portfolio Capital</h4>
+                        <div style="display: flex; align-items: baseline; gap: 10px;">
+                            <h2 id="metricCurrentCapital" style="margin: 0;">$0.00</h2>
+                            <span id="metricCapitalDelta" style="font-size: 13px; font-weight: 600;">(+$0.00)</span>
+                        </div>
+                        <div style="margin-top: 15px; display: flex; gap: 8px;">
+                            <input type="number" id="inputInitialCapital" class="form-input" placeholder="Set Initial Capital ($)" style="padding: 6px 12px; font-size: 12px; width: 140px;">
+                            <button onclick="window.saveInitialCapital()" style="background: transparent; border: 1px solid var(--border-blue-subtle); color: var(--text-secondary); border-radius: 8px; cursor: pointer; padding: 0 10px; font-size: 12px;">Save</button>
+                        </div>
+                    </div>
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>Win Rate</h4>
+                        <h2 id="metricWinRate">0%</h2>
+                        <p id="metricSystemEval" style="font-size: 11px; margin: 8px 0 0 0; color: var(--text-secondary);"></p>
+                    </div>
+                    <div class="metric-card" style="flex: 1;">
+                        <h4>Closed Trades</h4>
+                        <h2 id="metricTotalTrades">0</h2>
+                    </div>
+                </section>
+
                 <section class="control-panel" style="flex-wrap: wrap;">
-                    <input type="text" id="tradePair" class="form-input" placeholder="Pair (ex: BTC/USDT)" required style="flex: 1 1 15%;">
+                    <input type="text" id="tradePair" class="form-input" placeholder="Pair (e.g., BTC/USDT)" required style="flex: 1 1 15%;">
                     
-                    <select id="tradePosition" class="form-input" style="flex: 1 1 15%;">
-                        <option value="LONG">Long (Buy)</option>
-                        <option value="SHORT">Short (Sell)</option>
-                        <option value="SPOT">Spot Hold</option>
+                    <select id="tradePosition" class="form-input" style="flex: 1 1 12%;">
+                        <option value="LONG">Long</option>
+                        <option value="SHORT">Short</option>
+                        <option value="SPOT">Spot</option>
                     </select>
                     
-                    <input type="number" id="tradeLeverage" class="form-input" placeholder="Leverage (ex: 10)" style="flex: 1 1 10%;">
-                    <input type="number" id="tradeEntry" class="form-input" placeholder="Entry Price" step="any" required style="flex: 1 1 20%;">
-                    <input type="number" id="tradeExit" class="form-input" placeholder="Exit Price" step="any" required style="flex: 1 1 20%;">
-                    <input type="text" id="tradeSetup" class="form-input" placeholder="Alasan / Setup (ex: Bull Flag H4)" style="flex: 1 1 100%;">
+                    <input type="number" id="tradeMargin" class="form-input" placeholder="Margin/Size ($)" step="any" required style="flex: 1 1 12%;">
+                    <input type="number" id="tradeLeverage" class="form-input" placeholder="Leverage" style="flex: 1 1 10%;">
+                    <input type="number" id="tradeEntry" class="form-input" placeholder="Entry Price" step="any" required style="flex: 1 1 15%;">
+                    <input type="number" id="tradeExit" class="form-input" placeholder="Exit Price (Optional)" step="any" style="flex: 1 1 15%;">
+                    <input type="text" id="tradeSetup" class="form-input" placeholder="Setup / Entry Reason" style="flex: 1 1 100%;">
                     
-                    <button id="addTradeBtn" class="btn-primary" style="flex: 1 1 100%;">Eksekusi Jurnal Trading</button>
+                    <button id="addTradeBtn" class="btn-primary" style="flex: 1 1 100%;">Execute Trade Journal</button>
                 </section>
                 
                 <section class="data-view">
                     <div id="tradingList" class="grid-layout"></div>
                 </section>
             </div>
-
         </div>
     </div>
 
