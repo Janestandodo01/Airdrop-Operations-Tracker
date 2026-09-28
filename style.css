@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Warna Dasar Anti-Glare */
     --bg-main: #0b0f19;
     --bg-card: #111827;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     
-    /* Warna Aksen Halus (Transparan & Redup) */
     --accent-blue-muted: rgba(59, 130, 246, 0.08);
     --border-blue-subtle: rgba(30, 58, 138, 0.5);
     
@@ -17,7 +15,6 @@
     --accent-orange-muted: rgba(245, 158, 11, 0.08);
     --border-orange-subtle: rgba(120, 53, 15, 0.5);
 
-    /* Estetika Sudut & Bayangan */
     --radius-xl: 16px;
     --radius-2xl: 24px;
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -37,7 +34,6 @@ body {
     margin: 0 auto;
 }
 
-/* Navigasi Tab Elegan */
 .tab-nav {
     display: flex;
     gap: 12px;
@@ -67,7 +63,6 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
-/* Kartu Metrik Analitik (Rounded-2xl & Anti-Glare) */
 .metric-card {
     flex: 1;
     background: var(--bg-card);
@@ -98,13 +93,11 @@ body {
 
 .metric-card:hover { transform: translateY(-2px); }
 
-/* Status Aktif Kartu Metrik (Glow Sangat Tipis) */
 .metric-card.active-all { border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.03); }
 .metric-card.active-blue { border: 1px solid var(--border-blue-subtle); background: var(--accent-blue-muted); }
 .metric-card.active-green { border: 1px solid var(--border-green-subtle); background: var(--accent-green-muted); }
 .metric-card.active-orange { border: 1px solid var(--border-orange-subtle); background: var(--accent-orange-muted); }
 
-/* Komponen Formulir & Input */
 .control-panel {
     display: flex;
     gap: 12px;
@@ -124,14 +117,14 @@ body {
     font-size: 14px;
     outline: none;
     transition: var(--transition-smooth);
+    box-sizing: border-box;
 }
 
 .form-input:focus { border-color: rgba(96, 165, 250, 0.5); }
 
-/* Tombol Aksi Utama */
 .btn-primary {
     background: var(--accent-blue-muted);
-    color: #60a5fa; /* Biru slate lembut */
+    color: #60a5fa; 
     border: 1px solid var(--border-blue-subtle);
     padding: 14px 24px;
     font-size: 14px;
@@ -146,7 +139,6 @@ body {
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
 }
 
-/* Layout Daftar Proyek */
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -163,3 +155,22 @@ body {
 }
 
 .project-card:hover { border-color: rgba(96, 165, 250, 0.4); }
+
+/* Modal Edit Evaluasi Trading */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 15, 25, 0.85);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000; opacity: 0; pointer-events: none;
+    transition: var(--transition-smooth);
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content {
+    background: var(--bg-card); border: 1px solid var(--border-blue-subtle);
+    padding: 24px; border-radius: var(--radius-2xl); width: 400px;
+    box-shadow: var(--shadow-soft);
+}
+.modal-content h3 { margin-top: 0; color: var(--text-primary); margin-bottom: 16px; }
+.modal-content input, .modal-content textarea { width: 100%; margin-bottom: 12px; }
+.modal-content textarea { resize: vertical; min-height: 80px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; }
